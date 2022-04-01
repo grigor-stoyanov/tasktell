@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block main_content %}
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-control">
+            {{ form }}
+            <button type="submit" class="btn btn-primary mt-2">Sign up</button>
+        </div>
+    </form>
+{% endblock %}
