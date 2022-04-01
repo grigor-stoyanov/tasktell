@@ -18,12 +18,15 @@ footer {
 
 nav {
     z-index: 100;
+    position: fixed;
+    top: 0;
 }
 
 .splash {
     background-color: #212529;
     height: 80px;
 }
+
 
 .nav-link {
     background-color: #212529;
@@ -88,4 +91,28 @@ nav {
     border: 1px solid black;
     justify-content: center;
     height: 400px;
+}
+
+.member {
+    background-color: #6c757d;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.drop {
+    height: 400px;
+    width: 500px;
+    box-shadow: 10px 5px 5px black;
+    margin: auto;
+    margin-top: 224px;
+    padding: 5%;
+}
+.ping{
+    height: 80%;
+    width: 80%;
+    box-shadow: 10px 5px 5px black;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 5%;
 }
