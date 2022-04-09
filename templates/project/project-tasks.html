@@ -1,21 +1,54 @@
-
+{% load project_extras %}
 {% load static %}
-<div class="scrolly-outer tab-pane active" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+
+<div class="scrolly-outer tab-pane" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
     <div class="row scrolly-inner">
-        <div class="list-group task-card col-3">
-            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">List group item heading</h5>
-                    <small>3 days ago</small>
-                </div>
-                <p class="mb-1">Some placeholder content in a paragraph.</p>
-                <small>And some small print.</small>
-                <span class="badge bg-primary rounded-pill">14</span>
+        <div class="list-group task-card">
+            {% for task in tasks %}
+                <a data-bs-toggle="collapse"
+                   aria-expanded="false" aria-controls="task{{ task.pk }}"
+                   href="#task{{ task.pk }}" class="list-group-item" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ task.name }}</h5>
+                        <small>{{ task.date_added | days_ago }} days ago</small>
+                    </div>
+                    <p class="mb-1">{{ task.description }}</p>
+                    <small>{{ task.created_by }}</small>
+
+                    <span class="badge bg-primary rounded-pill">{{ task.energy }}</span>
+                    <div class="collapse list-group-item" id="task{{ task.pk }}">
+                        <a href="#" class="btn btn-success px-2">Done</a>
+                        <a href="#" class="btn btn-warning px-2">Edit</a>
+                        <a href="#" class="btn btn-danger" px-2>Delete</a>
+                    </div>
+                </a>
+            {% endfor %}
+            <form class="collapse" id="collapseNewTask" method="post"
+                  action="{% url 'project details' project.pk %}">
+                {% csrf_token %}
+                <a href="javascript:void(0)" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ form.name.label_tag }}{{ form.name }}</h5>
+                    </div>
+                    <p class="mb-1">{{ form.description }}</p>
+                    {{ form.created_by }}
+                    {{ form.project }}
+                    <span class="badge bg-primary rounded-pill">{{ form.energy.label_tag }} {{ form.energy }}</span>
+                    <button class="btn btn-primary" type="submit">Add</button>
+                    <button class="btn btn-danger" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseNewTask" aria-expanded="false" aria-controls="collapseTask">
+                        Cancel
+                    </button>
+                </a>
+            </form>
+            <a data-bs-toggle="collapse" href="#collapseNewTask" role="button" aria-expanded="false"
+               aria-controls="collapseTask" style="height: 100px" class="new-task">
+                <input width="220px" type="image" src="{% static 'img/add_icon.png' %}" alt="">
             </a>
         </div>
-        <div class="list-group task-card col-3">
+        <div class="list-group task-card">
             <a class="new-task" href="#">
-                <input width="220px" type="image" src="{% static 'add_icon.png' %}" alt="">
+                <input width="220px" type="image" src="{% static 'img/add_icon.png' %}" alt="">
             </a>
         </div>
     </div>

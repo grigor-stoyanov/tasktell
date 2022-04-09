@@ -2,11 +2,13 @@ import datetime
 
 from django.contrib.auth import models as auth_models, get_user_model
 from django.contrib.auth import base_user
+from django.contrib.auth.models import AbstractUser
 from django.core import validators
 from django.db import models
 
 from tasktell.auth_app.managers import TasktellUserManager
 from tasktell.common.validators import only_letters_validator, FileMaxSizeValidator, MinDateValidator
+
 
 FIRST_NAME_MIN_LENGTH = 2
 FIRST_NAME_MAX_LENGTH = 30
@@ -26,8 +28,8 @@ class TasktellUser(auth_models.PermissionsMixin, base_user.AbstractBaseUser):
         max_length=USERNAME_MAX_LENGTH,
         unique=True,
     )
-
     is_staff = models.BooleanField(default=False)
+
     USERNAME_FIELD = 'username'
 
     objects = TasktellUserManager()
@@ -76,3 +78,5 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('email', 'user')
+
+

@@ -1,24 +1,19 @@
+{% load project_extras %}
 {% load static %}
-<div class="tab-pane" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+<div class="tab-pane active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
     <h1 class="text-center"> Project Overview</h1>
     <article class="flex-container">
-        <img height="500px" width="500px" src="{% static 'icon.png' %}">
+        {% if not project.logo %}
+            <img height="500px" width="500px" src="{% static 'img/icon.png' %}" alt="">
+        {% else %}
+            <img height="500px" width="500px" src="{{ project.logo.url }}" alt="">
+        {% endif %}
         <div class="d-inline-block">
-            <h2>Project Name</h2>
-            <span><strong>Type: </strong> Public or Private</span>
-            <p><strong>Description: </strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi
-                assumenda at culpa debitis eaque, id
-                in magni maxime molestias nihil, non quo quod quos reiciendis repudiandae veniam voluptate.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet doloribus facere fuga laudantium
-                voluptates! Asperiores dolorum nostrum voluptatem. Amet at deleniti eius, itaque magnam molestiae
-                placeat ut? Aspernatur consectetur consequatur ducimus eos facere quisquam quos rerum vero? A
-                dignissimos expedita nobis officia sit. A ducimus eveniet maxime nulla voluptate voluptatum. Aspernatur
-                commodi, cum dolorem, doloremque dolores eum incidunt, iusto magni nobis perspiciatis placeat quasi
-                quidem quos repellat sunt tempore voluptates. Nulla ratione, recusandae? Aspernatur, consequuntur
-                dolorem doloribus eaque eos est expedita laudantium magnam magni, minus natus nulla odit optio pariatur
-                quaerat qui quis quos saepe unde, veniam voluptate voluptatem voluptatum.
+            <h2>{{ project.name}}</h2>
+            <span><strong>Type: </strong>{{   project.type}} </span>
+            <p><strong>Description: </strong>{{ project.description}}
             </p>
-            <span class="d-block"><strong>Members: </strong>23</span>
+            <span class="d-block"><strong>Members: </strong>{% members_count project %}</span>
             <span class="d-block"><strong>Website:</strong>www.myproject.com</span>
             <span class="d-block"><strong>Social Media:</strong></span>
             <div>

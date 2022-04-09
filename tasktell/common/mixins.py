@@ -1,3 +1,5 @@
+
+
 class FormBootstrapMixin:
     def _init_bootstrap(self):
         for _, field in self.fields.items():
@@ -7,3 +9,4 @@ class FormBootstrapMixin:
                 field.widget.attrs['class'] = ''
             if not len(field.widget.attrs['class']):
                 field.widget.attrs['class'] += 'form-control'
+

@@ -1,4 +1,5 @@
 {% load static %}
+
 <div class="tab-pane" id="members" role="tabpanel" aria-labelledby="members-tab">
     <h1 class="text-center">Project Members</h1>
     <p class="text-center">You can view and add new project members here.</p>
@@ -7,65 +8,36 @@
         <button class="btn-primary p-2"> invite new member</button>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="member list-group-item">
-            <div class="ms-2 me-auto">
-                <img width="64px" height="64px" src="{% static 'profile_icon.png' %}" alt="">
-                <div class="fw-bold d-inline">
-                    Username
-                    <div class="btn-group float-end" role="group" aria-label="Member Options">
-                        <button class="btn-success px-2 me-2">Message</button>
-                        <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle px-2 me-2"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                        </ul>
-                        <button class="btn-danger  px-2 me-2">Leave</button>
+        {% for member in members %}
+            <li class="member list-group-item">
+                <div class="ms-2 me-auto">
+                    {% if not member.avatar %}
+                        <img width="64px" height="64px" src="{% static 'img/profile_icon.png' %}" alt="">
+                    {% else %}
+                        <img width="64px" height="64px" src="{{ member.avatar.url }}" alt="">
+                    {% endif %}
+                    {{ member.user }}
+                    <div class="fw-bold d-inline">
+                        <div class="btn-group float-end" role="group" aria-label="Member Options">
+                            <button class="btn-success px-2 me-2">Message</button>
+                            <button class="btn-primary px-2 me-2">Add Member</button>
+                            <button class="btn-primary px-2 me-2">Accept</button>
+                            <button id="btnGroupDrop1" type="button"
+                                    class="btn btn-warning dropdown-toggle px-2 me-2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                Role
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <li><a class="dropdown-item" href="#">Owner</a></li>
+                                <li><a class="dropdown-item" href="#">Moderator</a></li>
+                                <li><a class="dropdown-item" href="#">Member</a></li>
+                            </ul>
+                            <button class="btn-danger  px-2 me-2">Leave</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </li>
-        <li class="member list-group-item">
-            <div class="ms-2 me-auto">
-                <img width="64px" height="64px" src="{% static 'profile_icon.png' %}" alt="">
-                <div class="fw-bold d-inline">
-                    Username
-                    <div class="btn-group float-end" role="group" aria-label="Member Options">
-                        <button class="btn-success px-2 me-2">Message</button>
-                        <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle px-2 me-2"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                        </ul>
-                        <button class="btn-danger  px-2 me-2">Leave</button>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="member list-group-item">
-            <div class="ms-2 me-auto">
-                <img width="64px" height="64px" src="{% static 'profile_icon.png' %}" alt="">
-                <div class="fw-bold d-inline">
-                    Username
-                    <div class="btn-group float-end" role="group" aria-label="Member Options">
-                        <button class="btn-success px-2 me-2">Message</button>
-                        <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle px-2 me-2"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                        </ul>
-                        <button class="btn-danger  px-2 me-2">Leave</button>
-                    </div>
-                </div>
-            </div>
-        </li>
+            </li>
+        {% endfor %}
     </ul>
 </div>
+<script src="{% static 'js/fancy_dropdown.js' %}"></script>

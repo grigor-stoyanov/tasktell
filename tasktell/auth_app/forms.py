@@ -1,14 +1,24 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django import forms
-from tasktell.auth_app.models import FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH, USERNAME_MAX_LENGTH, GENDERS, Profile
+from tasktell.auth_app.models import FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH, USERNAME_MAX_LENGTH, GENDERS, Profile, \
+    TasktellUser
 from tasktell.common.mixins import FormBootstrapMixin
+
+UserData = get_user_model()
+
+
+class PasswordResetForm(PasswordChangeForm,FormBootstrapMixin):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._init_bootstrap()
 
 
 class AuthForm(AuthenticationForm, FormBootstrapMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._init_bootstrap()
+
 
 
 class ProfileForm(forms.Form):
@@ -48,3 +58,22 @@ class CreateUserProfileForm(FormBootstrapMixin, ProfileForm, UserCreationForm):
             'username', 'password1', 'password2',
             'first_name', 'last_name', 'birth_date',
             'description', 'email', 'gender', 'avatar')
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ('user',)
+
+
+class DeleteProfileForm(forms.ModelForm):
+    def save(self, commit=True):
+        # TODO add logic for deletion of user/profile related models
+        TasktellUser.objects.get(pk=self.instance.pk).delete()
+        self.instance.delete()
+        return self.instance
+
+    class Meta:
+        model = Profile
+        exclude = ('first_name', 'last_name', 'birth_date',
+                   'description', 'email', 'gender', 'avatar', 'user')

@@ -1,0 +1,3 @@
+{% for project in list_projects %}
+    <li><a class="dropdown-item" href="{% url 'project details' project.pk %}">{{ project.name }}</a></li>
+{% endfor %}
