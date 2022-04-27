@@ -1,2 +1,2 @@
-web: gunicorn tasktell.tasktell.wsgi
+web: gunicorn tasktell.wsgi
 release: python manage.py migrate
