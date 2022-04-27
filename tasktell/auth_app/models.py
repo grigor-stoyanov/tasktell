@@ -1,5 +1,5 @@
 import datetime
-
+from cloudinary.models import CloudinaryField
 from django.contrib.auth import models as auth_models, get_user_model
 from django.contrib.auth import base_user
 from django.contrib.auth.models import AbstractUser
@@ -50,10 +50,13 @@ class Profile(models.Model):
             only_letters_validator,
         )
     )
-    avatar = models.ImageField(
-        upload_to='avatars/',
-        blank=True, null=True,
-        validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
+    # avatar = models.ImageField(
+    #     upload_to='avatars/',
+    #     blank=True, null=True,
+    #     validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
+    #
+
+    avatar=CloudinaryField('image')
 
     birth_date = models.DateField(blank=True, null=True,
                                   validators=(MinDateValidator(MIN_DATE),)

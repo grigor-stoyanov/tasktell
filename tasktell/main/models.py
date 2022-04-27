@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 NAME_MAX_LENGTH = 30
 UserModel = get_user_model()
@@ -11,7 +12,8 @@ class Project(models.Model):
     TYPE_PUBLIC = ('Public', 'Public')
     TYPE_PRIVATE = ('Private', 'Private')
     TYPE_CHOICES = (TYPE_PRIVATE, TYPE_PUBLIC)
-    logo = models.ImageField(upload_to='media/project_logos/', blank=True, null=True)
+    # logo = models.ImageField(upload_to='media/project_logos/', blank=True, null=True)
+    logo = CloudinaryField('image')
     name = models.CharField(max_length=NAME_MAX_LENGTH)
     type = models.CharField(
         choices=TYPE_CHOICES,
@@ -28,7 +30,8 @@ class TaskList(models.Model):
     def get_list_tasks(self):
         return self.tasks_set.select_related()
 
-    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
 
 class Tasks(models.Model):
     name = models.CharField(max_length=NAME_MAX_LENGTH)
