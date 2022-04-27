@@ -2,7 +2,6 @@
 {% block main_content %}
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        {{ form.non_field_errors }}
         <div class="form-control drop">
             {{ form }}
             <button type="submit" class="btn btn-primary mt-2">Sign in</button>

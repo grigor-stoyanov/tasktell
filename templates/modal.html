@@ -1,0 +1,10 @@
+{% load static %}
+<link rel="stylesheet" href={% static "css/modal.css" %}>
+
+<div class="overlay">
+    <div class="plop">
+        <p>Are you sure you want to delete your profile?</p>
+        <button type="submit" class="btn btn-danger">Confirm</button>
+        <a href="{% url 'profile' profile.pk %}" class="btn btn-success">Cancel</a>
+    </div>
+</div>

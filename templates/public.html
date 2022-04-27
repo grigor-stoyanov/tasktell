@@ -7,13 +7,14 @@
         {% for project in projects %}
             <div class="card">
                 {% if project.logo %}
-                    <img src="{{ project.logo }}" class="card-img-top" alt="">
+                    <img src="{{ project.logo.url }}" class="card-img-top" alt="">
                 {% else %}
                     <img src="{% static 'img/icon.png' %}" class="card-img-top" alt="">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ project.name }}</h5>
                     <p class="card-text">Project Desecription:{{ project.description }}</p>
+                    {% if request.user.is_authenticated %}
                     <form method="post" action="{% url 'public projects' %}">
                         {% csrf_token %}
                         {{ form }}
@@ -22,6 +23,7 @@
                         </button>
                         <a href="{% url 'project details' project.pk %}" class="btn btn-primary">Details</a>
                     </form>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

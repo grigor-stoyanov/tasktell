@@ -19,14 +19,16 @@ class FileMaxSizeValidator:
         if file_size > self.limit_mb:
             raise ValidationError(f"Max size of file is {self.limit_mb} MB")
 
+
 @deconstructible
 class MinDateValidator:
-    def __init__(self,min_date):
+    def __init__(self, min_date):
         self.min_date = min_date
 
     def __call__(self, value):
         if value < self.min_date:
             raise ValidationError(f'Date must be greater than {self.min_date}')
+
 
 @deconstructible
 class MaxDateValidator:
@@ -36,3 +38,15 @@ class MaxDateValidator:
     def __call__(self, value):
         if value > self.max_date:
             raise ValidationError(f'Date must be lesser than {self.max_date}')
+
+
+@deconstructible
+class UserExistsValidator:
+    def __init__(self, users):
+        self.users = users
+
+    def __call__(self, email):
+        for user in self.users:
+            if email == user.profile.email:
+                return
+        raise ValidationError('Email does not match any active user.')

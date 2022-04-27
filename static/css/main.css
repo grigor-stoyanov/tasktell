@@ -86,11 +86,16 @@ nav {
     background-color: #b3c100;
 }
 
+.description {
+    white-space: normal;
+}
+
 .new-task {
     display: flex;
     border: 1px solid black;
     justify-content: center;
     height: 400px;
+    width: 434px;
 }
 
 .member {
@@ -117,6 +122,7 @@ nav {
     margin-bottom: 1%;
     padding: 5%;
 }
-.helptext{
+
+.helptext {
     display: none;
 }

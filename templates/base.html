@@ -46,6 +46,11 @@
                         <a class="nav-link" href="{% url 'public projects' %}">Public Projects</a>
                     </li>
                 {% endif %}
+                {% if request.user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+                {% endif %}
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'public projects' %}">Public Projects</a>
@@ -65,14 +70,11 @@
                             {% list_projects user.pk %}
                         </ul>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Messages</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
                 {% endif %}
+
             </ul>
 
         </div>

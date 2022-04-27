@@ -1,6 +1,6 @@
 {% load project_extras %}
 {% load static %}
-<div class="tab-pane active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+<div class="tab-pane" id="overview" role="tabpanel" aria-labelledby="overview-tab">
     <h1 class="text-center"> Project Overview</h1>
     <article class="flex-container">
         {% if not project.logo %}
@@ -9,9 +9,9 @@
             <img height="500px" width="500px" src="{{ project.logo.url }}" alt="">
         {% endif %}
         <div class="d-inline-block">
-            <h2>{{ project.name}}</h2>
-            <span><strong>Type: </strong>{{   project.type}} </span>
-            <p><strong>Description: </strong>{{ project.description}}
+            <h2>{{ project.name }}</h2>
+            <span><strong>Type: </strong>{{ project.type }} </span>
+            <p><strong>Description: </strong>{{ project.description }}
             </p>
             <span class="d-block"><strong>Members: </strong>{% members_count project %}</span>
             <span class="d-block"><strong>Website:</strong>www.myproject.com</span>
@@ -30,9 +30,9 @@
             <hr>
             <span><strong>Progress: </strong></span>
             <div class="progress w-50 mt-2 mb-2">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
-                     aria-valuemax="100">25%
-                </div>
+                    <div class="progress-bar" role="progressbar" style="width: {% progress project.pk %}%;" aria-valuenow="{% progress project.pk %}"
+                         aria-valuemin="0" aria-valuemax="100">{% progress project.pk %}%
+                    </div>
             </div>
         </div>
     </article>

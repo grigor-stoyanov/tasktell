@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block main_content %}
     <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item">
@@ -20,10 +20,22 @@
         </li>
     </ul>
     <div class="tab-content">
-        {% include 'project/project-tasks.html' %}
-        {% include 'project/project-overview.html' %}
-        {% include 'project/project-members.html' %}
+        {% if 'details' in request.path %}
+            {% include 'project/project-overview.html' %}
+
+            {% if not user_member.role == 'Applicant' %}
+                {% include 'project/project-tasks.html' %}
+                {% include 'project/project-members.html' %}
+            {% endif %}
+        {% elif 'edit' in request.path %}
+            {% include 'project/project-edit-task.html' %}
+        {% elif 'task-list' in request.path %}
+            {% include 'project/project-delete-task-list.html' %}
+        {% else %}
+            {% include 'project/project-delete-task.html' %}
+        {% endif %}
     </div>
+    <script src="{% static 'js/tasklist_show.js' %}"></script>
 {% endblock %}
 {% block footer %}
 {% endblock %}

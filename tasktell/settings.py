@@ -38,6 +38,7 @@ DJANGO_APPS = [
 TASKTELL_APPS = [
     'tasktell.main',
     'tasktell.auth_app',
+    'tasktell.chat'
 ]
 INSTALLED_APPS = DJANGO_APPS + TASKTELL_APPS
 
@@ -143,12 +144,16 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-# Base url to serve media files
-MEDIA_URL = '/media/'
-
-# Path where media is stored
-
-
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_URL= 'media/'
 
 AUTH_USER_MODEL = "auth_app.TasktellUser"
+
+EMAIL_BACKEND = 'django.core.mail.backends.s    mtp.EmailBackend'
+
+# Optional SMTP authentication information for EMAIL_HOST.
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'grigorg25@gmail.com'
+EMAIL_HOST_PASSWORD = 'jivotno2'

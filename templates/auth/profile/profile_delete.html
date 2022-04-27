@@ -2,7 +2,6 @@
 {% load static %}
 {% block main_content %}
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
-    <link href="{% static 'css/modal.css' %}" rel="stylesheet">
     <div class="main-body flex-container">
         <div class="card">
             <div class="card-body">
@@ -20,7 +19,7 @@
                     </div>
                     <h3>Bio:</h3>
                     <p>{{ profile.description }}</p>
-                    {# social media if any #}
+                    {# social mediafiles if any #}
                     <!--
                         <ul class="list-group list-group-flush down">
                             <li class="list-group-item">Twitter:</li>
@@ -80,15 +79,10 @@
             {% include 'auth/profile/profile_projects.html' %}
         </div>
     </div>
+    <link href="{% static 'css/modal.css' %}" rel="stylesheet">
     <form method="post" enctype="multipart/form-data" action="{% url 'delete profile' profile.pk %}">
         {% csrf_token %}
         {{ form }}
-        <div class="overlay">
-            <div class="plop">
-                <p>Are you sure you want to delete your profile?</p>
-                <button type="submit" class="btn btn-danger">Confirm</button>
-                <a href="{% url 'profile' profile.pk %}" class="btn btn-success">Cancel</a>
-            </div>
-        </div>
+        {% include 'modal.html' %}
     </form>
 {% endblock %}

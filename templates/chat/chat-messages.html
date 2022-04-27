@@ -2,97 +2,33 @@
 <div class="position-relative">
     <div class="chat-messages p-4">
 
-
-
-        <div class="chat-message-right pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:33 am</div>
+        {% for message in messages %}
+            <div class="chat-message-{% if message.created_by_id == request.user.pk %}right{% else %}left{% endif %} pb-4">
+                <div>
+                    {% if message.created_by.profile.avatar %}
+                        <img class="rounded-circle mr-1" src="{{ message.created_by.profile.avatar.url }}"
+                             width="40" height="40">
+                    {% else %}
+                        <img src="{% static 'img/profile_icon.png' %}" class="rounded-circle mr-1"
+                             alt="" width="40" height="40">
+                    {% endif %}
+                    <div class="text-muted small text-nowrap mt-2">{{ message.time|date:'g:i a' }}</div>
+                </div>
+                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                    <div class="font-weight-bold mb-1">{{ message.created_by }}</div>
+                    {{ message.content }}
+                </div>
             </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                <div class="font-weight-bold mb-1">You</div>
-                Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-            </div>
-        </div>
-
-        <div class="chat-message-left pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-            </div>
-        </div><div class="chat-message-right pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:33 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                <div class="font-weight-bold mb-1">You</div>
-                Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-            </div>
-        </div>
-
-        <div class="chat-message-left pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-            </div>
-        </div><div class="chat-message-right pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:33 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                <div class="font-weight-bold mb-1">You</div>
-                Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-            </div>
-        </div>
-
-        <div class="chat-message-left pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-            </div>
-        </div><div class="chat-message-right pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:33 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                <div class="font-weight-bold mb-1">You</div>
-                Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-            </div>
-        </div>
-
-        <div class="chat-message-left pb-4">
-            <div>
-                <img src="{% static 'img/profile_icon.png' %}"
-                     class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-                <div class="text-muted small text-nowrap mt-2">2:34 am</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                <div class="font-weight-bold mb-1">Sharon Lessman</div>
-                Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
-            </div>
-        </div>
-
+        {% endfor %}
     </div>
 </div>
+{# Chat Input #}
+<form method="post" action="{% url 'chat' object.pk  current_chat.pk %}">
+    <div class="flex-grow-0 py-3 px-4 border-top">
+        <div class="input-group">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</form>

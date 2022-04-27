@@ -1,6 +1,6 @@
 from django import template
 from django.contrib.auth import get_user_model
-from tasktell.main.models import Project, Member
+from tasktell.main.models import Project, Member, Tasks
 import datetime as dt
 
 register = template.Library()
@@ -14,6 +14,18 @@ def disable(project_pk, user_pk):
         return 'disabled'
     except Exception:
         return
+
+
+@register.simple_tag
+def progress(project_pk):
+    completed = Tasks.objects.filter(project_id=project_pk, is_done=True)
+    incomplete = Tasks.objects.filter(project_id=project_pk, is_done=False)
+    if not (len(incomplete) + len(completed)):
+        return 0
+    if completed == incomplete:
+        return 100
+    completion = (len(completed)) / (len(completed) + len(incomplete)) * 100
+    return f'{completion:.0f}'
 
 
 @register.inclusion_tag('tags/project-nav-dropdown.html')
@@ -30,4 +42,4 @@ def members_count(project):
 
 @register.filter
 def days_ago(value):
-    return (value - dt.date.today()).days
+    return (dt.date.today() - value).days

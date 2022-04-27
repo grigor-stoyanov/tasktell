@@ -11,7 +11,7 @@ class Project(models.Model):
     TYPE_PUBLIC = ('Public', 'Public')
     TYPE_PRIVATE = ('Private', 'Private')
     TYPE_CHOICES = (TYPE_PRIVATE, TYPE_PUBLIC)
-    logo = models.ImageField(upload_to='project_logos/', blank=True, null=True)
+    logo = models.ImageField(upload_to='media/project_logos/', blank=True, null=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH)
     type = models.CharField(
         choices=TYPE_CHOICES,
@@ -21,13 +21,24 @@ class Project(models.Model):
     description = models.TextField(blank=True, null=True)
 
 
+class TaskList(models.Model):
+    title = models.CharField(max_length=NAME_MAX_LENGTH)
+
+    @property
+    def get_list_tasks(self):
+        return self.tasks_set.select_related()
+
+    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+
 class Tasks(models.Model):
     name = models.CharField(max_length=NAME_MAX_LENGTH)
-    date_added = models.DateField(auto_now_add=True)
+    date_added = models.DateField(auto_now=True)
     description = models.TextField()
     energy = models.IntegerField()
     created_by = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    is_done = models.BooleanField(default=False)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    task_list = models.ForeignKey(TaskList, on_delete=models.CASCADE)
 
 
 class Member(models.Model):
