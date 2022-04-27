@@ -24,7 +24,10 @@ SECRET_KEY = 'django-insecure-rlvnw&h5cs=zx5qwtw#nu%)^a&apsmii=oh*9*c58)+xd@y$6k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'tasktell.herokuapp.com',
+]
 
 # Application definition
 DJANGO_APPS = [
@@ -142,7 +145,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 BASE_DIR2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = 'static/'
-STATIC_ROOT=os.path.join(BASE_DIR2, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR2, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR2, 'static'),)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
