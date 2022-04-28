@@ -18,6 +18,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    '0.0.0.0',
     'tasktell.herokuapp.com',
 ]
 
@@ -164,9 +165,9 @@ MEDIA_URL = 'media/'
 
 AUTH_USER_MODEL = "auth_app.TasktellUser"
 cloudinary.config(
-  cloud_name = "hagtn3ld8",
-  api_key = "134141593643571",
-  api_secret = "ftAP5HOwIJlAvxuArA4wptPu6xo"
+    cloud_name="hagtn3ld8",
+    api_key="134141593643571",
+    api_secret="ftAP5HOwIJlAvxuArA4wptPu6xo"
 )
 EMAIL_BACKEND = 'django.core.mail.backends.s    mtp.EmailBackend'
 
