@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'tasktell.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd7i0s6bicf5g9i',
+        'NAME': 'd2ccqrpni591sj',
         'USER': 'mtcdjoipbdecfn',
         'PASSWORD': 'eadc2a3539ae59429b675220abf534e20b7571feaf71dc8cc511a00f669c3e58',
         'HOST': 'ec2-34-242-84-130.eu-west-1.compute.amazonaws.com',
