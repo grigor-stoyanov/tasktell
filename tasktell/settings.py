@@ -17,10 +17,7 @@ SECRET_KEY = 'django-insecure-rlvnw&h5cs=zx5qwtw#nu%)^a&apsmii=oh*9*c58)+xd@y$6k
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'tasktell.herokuapp.com',
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
 # Application definition
 DJANGO_APPS = [
@@ -87,14 +84,19 @@ WSGI_APPLICATION = 'tasktell.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
+DATABASE_NAME = os.getenv('DATABASE_NAME')
+DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
+DATABASE_USER = os.getenv('DATABASE_USER')
+DATABASE_HOST = os.getenv('DATABASE_HOST')
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd2ccqrpni591sj',
-        'USER': 'mtcdjoipbdecfn',
-        'PASSWORD': 'eadc2a3539ae59429b675220abf534e20b7571feaf71dc8cc511a00f669c3e58',
-        'HOST': 'ec2-34-242-84-130.eu-west-1.compute.amazonaws.com',
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': DATABASE_HOST,
         'PORT': '5432',
     }
 }
