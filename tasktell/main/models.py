@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.db import models
@@ -12,8 +14,10 @@ class Project(models.Model):
     TYPE_PUBLIC = ('Public', 'Public')
     TYPE_PRIVATE = ('Private', 'Private')
     TYPE_CHOICES = (TYPE_PRIVATE, TYPE_PUBLIC)
-    # logo = models.ImageField(upload_to='media/project_logos/', blank=True, null=True)
-    logo = CloudinaryField('image')
+    if os.getenv('APP_ENVIRONMENT') == 'LOCAL':
+        logo = models.ImageField(upload_to='media/project_logos/', blank=True, null=True)
+    else:
+        logo = CloudinaryField('image', blank=True, null=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH)
     type = models.CharField(
         choices=TYPE_CHOICES,

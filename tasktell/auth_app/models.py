@@ -1,4 +1,6 @@
 import datetime
+import os
+
 from cloudinary.models import CloudinaryField
 from django.contrib.auth import models as auth_models, get_user_model
 from django.contrib.auth import base_user
@@ -8,7 +10,6 @@ from django.db import models
 
 from tasktell.auth_app.managers import TasktellUserManager
 from tasktell.common.validators import only_letters_validator, FileMaxSizeValidator, MinDateValidator
-
 
 FIRST_NAME_MIN_LENGTH = 2
 FIRST_NAME_MAX_LENGTH = 30
@@ -50,13 +51,16 @@ class Profile(models.Model):
             only_letters_validator,
         )
     )
-    # avatar = models.ImageField(
-    #     upload_to='avatars/',
-    #     blank=True, null=True,
-    #     validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
-    #
 
-    avatar=CloudinaryField('image')
+    if os.getenv('APP_ENVIRONMENT') == 'LOCAL':
+        avatar = models.ImageField(
+            upload_to='avatars/',
+            blank=True, null=True,
+            validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
+    else:
+        avatar = CloudinaryField('image',
+                                 blank=True, null=True,
+                                 validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
 
     birth_date = models.DateField(blank=True, null=True,
                                   validators=(MinDateValidator(MIN_DATE),)
@@ -64,6 +68,7 @@ class Profile(models.Model):
     description = models.TextField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True, unique=True)
     gender = models.CharField(
+
         max_length=max(len(x) for x, _ in GENDERS),
         choices=GENDERS,
         default=GENDER_DO_NOT_SHOW,
@@ -81,5 +86,3 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('email', 'user')
-
-
