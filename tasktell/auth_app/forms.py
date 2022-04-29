@@ -11,6 +11,7 @@ from tasktell.auth_app.models import FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH
     TasktellUser, FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, AVATAR_MAX_SIZE, MIN_DATE
 from tasktell.common.mixins import FormBootstrapMixin
 from tasktell.common.validators import only_letters_validator, FileMaxSizeValidator, MinDateValidator
+from tasktell.main.models import Member
 
 UserData = get_user_model()
 
@@ -39,7 +40,7 @@ class ProfileForm(forms.Form):
     if os.getenv('APP_ENVIRONMENT') == 'LOCAL':
         avatar = forms.ImageField(required=False, validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
     else:
-        avatar = CloudinaryFileField()
+        avatar = CloudinaryFileField(required=False)
 
 
 class CreateUserProfileForm(FormBootstrapMixin, ProfileForm, UserCreationForm):
@@ -79,7 +80,12 @@ class EditProfileForm(forms.ModelForm):
 
 class DeleteProfileForm(forms.ModelForm):
     def save(self, commit=True):
-        # TODO add logic for deletion of user/profile related models
+        memberships = Member.objects.filter(user_id=self.instance.pk)
+        for membership in memberships:
+            if membership.role == 'Owner':
+                project = membership.projects.first()
+                project.member_set.select_related().delete()
+                project.delete()
         TasktellUser.objects.get(pk=self.instance.pk).delete()
         self.instance.delete()
         return self.instance

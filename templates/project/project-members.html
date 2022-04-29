@@ -51,7 +51,7 @@
                     <a href="{% url 'profile' member.user_id %}">{{ member.user }}</a>
                     <div class="fw-bold d-inline">
                         <div class="btn-group float-end" role="group" aria-label="Member Options">
-                            <form action="{% url 'change role' member.pk project.id %}" method="post">
+                            <form action="{% url 'change role'  project.pk member.pk %}" method="post">
                                 {% csrf_token %}
                                 {{ form4 }}
                                 <label> Role:

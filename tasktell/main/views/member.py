@@ -83,7 +83,14 @@ class ChangeRoleView(UpdateView):
     form_class = ChangeRoleForm
 
     def get_success_url(self):
-        return reverse('project details', kwargs={'pk': self.kwargs['id']})
+        return reverse('project details', kwargs={'pk': self.kwargs['pk']})
+
+    def post(self, request, *args, **kwargs):
+        form = ChangeRoleForm(request.POST, instance=Member.objects.get(pk=self.kwargs['id']))
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def form_valid(self, form):
         if not form.instance.role == Member.Roles.OWNER:
