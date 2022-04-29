@@ -90,9 +90,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-if 'test' in sys.argv or 'test\_coverage' in sys.argv:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
-    DATABASES['default']['NAME'] = ':memory:'
 
 LOGGING = {
     'version': 1,
@@ -154,8 +151,6 @@ STATIC_ROOT = os.path.join(BASE_DIR2, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR2, 'static'),)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 MEDIA_URL = 'media/'

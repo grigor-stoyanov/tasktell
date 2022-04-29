@@ -4,7 +4,7 @@ from django.utils.deconstruct import deconstructible
 
 def only_letters_validator(value):
     if not value.isalpha():
-        raise ValidationError
+        raise ValidationError(f'Name can only contain letters.')
 
 
 @deconstructible

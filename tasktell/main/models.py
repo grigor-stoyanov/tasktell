@@ -62,3 +62,6 @@ class Member(models.Model):
                             max_length=CHOICE_MAX_LENGTH,
                             )
     projects = models.ManyToManyField(Project)
+
+    def __str__(self):
+        return f'{self.user.username}'

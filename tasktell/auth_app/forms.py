@@ -1,14 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django import forms
+from django.core.validators import MinLengthValidator
+
 from tasktell.auth_app.models import FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH, USERNAME_MAX_LENGTH, GENDERS, Profile, \
-    TasktellUser
+    TasktellUser, FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, AVATAR_MAX_SIZE, MIN_DATE
 from tasktell.common.mixins import FormBootstrapMixin
+from tasktell.common.validators import only_letters_validator, FileMaxSizeValidator, MinDateValidator
 
 UserData = get_user_model()
 
 
-class PasswordResetForm(PasswordChangeForm,FormBootstrapMixin):
+class PasswordResetForm(PasswordChangeForm, FormBootstrapMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._init_bootstrap()
@@ -20,15 +23,16 @@ class AuthForm(AuthenticationForm, FormBootstrapMixin):
         self._init_bootstrap()
 
 
-
 class ProfileForm(forms.Form):
-    first_name = forms.CharField(max_length=FIRST_NAME_MAX_LENGTH)
-    last_name = forms.CharField(max_length=LAST_NAME_MAX_LENGTH)
+    first_name = forms.CharField(max_length=FIRST_NAME_MAX_LENGTH, validators=(
+        only_letters_validator, MinLengthValidator(FIRST_NAME_MIN_LENGTH)))
+    last_name = forms.CharField(max_length=LAST_NAME_MAX_LENGTH,
+                                validators=(only_letters_validator, MinLengthValidator(LAST_NAME_MIN_LENGTH)))
     email = forms.EmailField()
     description = forms.CharField(widget=forms.Textarea, required=False)
-    birth_date = forms.DateField()
+    birth_date = forms.DateField(validators=(MinDateValidator(MIN_DATE),))
     gender = forms.ChoiceField(choices=GENDERS)
-    avatar = forms.ImageField(required=False)
+    avatar = forms.ImageField(required=False, validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
 
 
 class CreateUserProfileForm(FormBootstrapMixin, ProfileForm, UserCreationForm):

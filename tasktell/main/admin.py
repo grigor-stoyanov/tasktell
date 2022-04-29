@@ -3,16 +3,17 @@ from django.contrib import admin
 from tasktell.main.models import Project, Member
 
 
-class MembersInlineAdmin(admin.StackedInline):
-    model = Member
+class MembersInlineAdmin(admin.TabularInline):
+    model = Member.projects.through
+    extra = 0
 
 
 @admin.register(Project)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'type',)
-    inlines = (Member,)
+    inlines = (MembersInlineAdmin,)
 
 
 @admin.register(Member)
-class PetAdmin(admin.ModelAdmin):
+class MemberAdmin(admin.ModelAdmin):
     list_display = ('user', 'role')
