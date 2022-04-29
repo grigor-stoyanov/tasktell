@@ -1,3 +1,6 @@
+import os
+
+from cloudinary.models import CloudinaryField
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django import forms
@@ -32,7 +35,10 @@ class ProfileForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea, required=False)
     birth_date = forms.DateField(validators=(MinDateValidator(MIN_DATE),))
     gender = forms.ChoiceField(choices=GENDERS)
-    avatar = forms.ImageField(required=False, validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
+    if os.getenv('APP_ENVIRONMENT') == 'LOCAL':
+        avatar = forms.ImageField(required=False, validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
+    else:
+        avatar = CloudinaryField('image')
 
 
 class CreateUserProfileForm(FormBootstrapMixin, ProfileForm, UserCreationForm):

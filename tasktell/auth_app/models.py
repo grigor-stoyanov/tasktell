@@ -58,9 +58,7 @@ class Profile(models.Model):
             blank=True, null=True,
             validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
     else:
-        avatar = CloudinaryField('image',
-                                 blank=True, null=True,
-                                 validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
+        avatar = CloudinaryField('image', blank=True, null=True, )
 
     birth_date = models.DateField(blank=True, null=True,
                                   validators=(MinDateValidator(MIN_DATE),)
