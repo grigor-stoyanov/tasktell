@@ -73,7 +73,7 @@ WSGI_APPLICATION = 'tasktell.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+import sys
 
 DATABASE_NAME = os.getenv('DATABASE_NAME')
 DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
@@ -90,6 +90,9 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+if 'test' in sys.argv or 'test\_coverage' in sys.argv:
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+    DATABASES['default']['NAME'] = ':memory:'
 
 LOGGING = {
     'version': 1,
