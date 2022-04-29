@@ -1,5 +1,6 @@
 import os
 
+from cloudinary.forms import CloudinaryFileField
 from cloudinary.models import CloudinaryField
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
@@ -38,7 +39,7 @@ class ProfileForm(forms.Form):
     if os.getenv('APP_ENVIRONMENT') == 'LOCAL':
         avatar = forms.ImageField(required=False, validators=(FileMaxSizeValidator(AVATAR_MAX_SIZE),))
     else:
-        avatar = CloudinaryField('image')
+        avatar = CloudinaryFileField()
 
 
 class CreateUserProfileForm(FormBootstrapMixin, ProfileForm, UserCreationForm):
