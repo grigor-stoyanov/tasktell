@@ -2,7 +2,7 @@
 {% block delete_content %}
     {% load static %}
     <link rel="stylesheet" href={% static "css/modal.css" %}>
-    <form method="post" action="{% url 'delete task' object.pk %}">
+    <form method="post" action="{% url 'delete task' object.project_id object.pk %}">
         {% csrf_token %}
         {{ form }}
         <div class="overlay">

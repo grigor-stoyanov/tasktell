@@ -19,6 +19,8 @@ class CreateTaskForm(forms.ModelForm):
         model = Tasks
 
 
+
+
 class DeleteTaskForm(forms.ModelForm):
     class Meta:
         fields = ()

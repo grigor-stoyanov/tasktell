@@ -34,8 +34,8 @@
                                 </a>
                                 {% if user_member.role == 'Moderator' or user_member.role == 'Owner' %}
                                     {% if not task.is_done %}
-                                        <a href="{% url 'edit task' task.pk %}" class="btn btn-warning px-2">Edit</a>
-                                        <a href="{% url 'delete task' task.pk %}" class="btn btn-danger px-2">Delete</a>
+                                        <a href="{% url 'edit task' project.pk task.pk %}" class="btn btn-warning px-2">Edit</a>
+                                        <a href="{% url 'delete task' project.pk task.pk %}" class="btn btn-danger px-2">Delete</a>
                                     {% endif %}
                                 {% endif %}
                             </div>

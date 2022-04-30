@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, DeleteView, RedirectView
@@ -15,6 +16,8 @@ class TaskEditView(LoginRequiredMixin, UpdateView):
     template_name = 'project/project.html'
     form_class = CreateTaskForm
     model = Tasks
+    pk_url_kwarg = 'id'
+
 
     def get_initial(self):
         initial = super().get_initial()
@@ -31,12 +34,21 @@ class TaskEditView(LoginRequiredMixin, UpdateView):
         context['project'] = self.object.project
         return context
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
 
 @method_decorator(decorators, name='dispatch')
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'project/project.html'
     form_class = DeleteTaskForm
     model = Tasks
+    pk_url_kwarg = 'id'
 
     def get_success_url(self):
         project = self.object.project
