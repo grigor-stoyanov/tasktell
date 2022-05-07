@@ -1,3 +1,4 @@
+{% load project_extras %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -5,54 +6,77 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="{% static 'main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+
     <title>Tasktell</title>
 </head>
 <body class="bg-secondary d-flex flex-column min-vh-100">
-<nav class="navbar navbar-expand-lg navbar-secondary splash">
+<nav class="navbar navbar-expand-lg navbar-secondary splash mt-auto">
     <div class="container-fluid splash">
 
-        <a class="navbar-brand" href="#"><img src="{% static 'icon.png' %}" width="80" height="80" alt=""></a>
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/icon.png' %}" width="80" height="80"
+                                                             alt=""></a>
 
         <button class="navbar-toggler " type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
-                <img height="40" width="40" src="{% static "more.png" %}" alt="">
+                <img height="40" width="40" src="{% static "img/more.png" %}" alt="">
             </span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Create Project</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Joined Projects
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">asd</a></li>
-                        <li><a class="dropdown-item" href="#">asd</a></li>
-                        <li><a class="dropdown-item" href="#">asd</a></li>
-                    </ul>
-                </li>
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'public projects' %}">Public Projects</a>
+                    </li>
+                {% endif %}
+                {% if request.user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'public projects' %}">Public Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' request.user.id %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create project' %}">Create Project</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Joined Projects
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% list_projects user.pk %}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% endif %}
+
             </ul>
+
         </div>
     </div>
 </nav>
@@ -61,8 +85,9 @@
     {% block main_content %}
     {% endblock %}
 </main>
-
-<footer class="mt-auto">&copy; Grigor Stoyanov Project Manager with chat demo</footer>
-<script src="{% static 'side_scroll.js' %}"></script>
+{% block footer %}
+    <footer class="mt-auto">&copy; Grigor Stoyanov Project Manager with chat demo</footer>
+{% endblock %}
+<script src="{% static 'js/side_scroll.js' %}"></script>
 </body>
 </html>

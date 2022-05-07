@@ -1,0 +1,101 @@
+{% load project_extras %}
+{% load static %}
+<div class="scrolly-outer tab-pane active" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+    <div class="row scrolly-inner">
+        {% block delete_content %}
+        {% endblock %}
+        {% if taskboards %}
+            {% for board in taskboards %}
+                <div class="list-group task-card bg-secondary">
+                    <div class="d-flex justify-content-between">
+                        <h2>{{ board.title }}</h2>
+                        <a class="btn-close" href="{% url 'delete taskboard' board.pk %}"></a>
+                    </div>
+                    {% for task in board.get_list_tasks %}
+                        <a data-bs-toggle="collapse"
+                           aria-expanded="false" aria-controls="tsk-{{ task.pk }}"
+                           href="#tsk-{{ task.pk }}" aria-current="true" class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ task.name }}</h5>
+                                <small>Last updated: {{ task.date_added | days_ago }} days ago</small>
+                            </div>
+                            <p {% if task.is_done %}style="text-decoration: line-through"{% endif %}
+                               class="description mb-1">{{ task.description }}</p>
+                            <small>Last updated by:{{ task.created_by }}</small>
+                            <span class="badge bg-primary rounded-pill">Energy: {{ task.energy }}</span>
+                            <div class="collapse list-group-item" id="tsk-{{ task.pk }}">
+                                <a href="{% url 'complete task' project.pk task.pk %}" class="btn btn-success px-2">
+                                    {% if task.is_done %}
+                                        Undo
+                                    {% else %}
+                                        Done
+                                    {% endif %}
+                                </a>
+                                {% if user_member.role == 'Moderator' or user_member.role == 'Owner' %}
+                                    {% if not task.is_done %}
+                                        <a href="{% url 'edit task' task.pk %}" class="btn btn-warning px-2">Edit</a>
+                                        <a href="{% url 'delete task' task.pk %}" class="btn btn-danger px-2">Delete</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </a>
+                        {% block edit_content %}
+                        {% endblock %}
+                    {% endfor %}
+
+                    <form class="collapse" id="taskList-{{ board.pk }}" method="post"
+                          action="{% url 'project details' project.pk %}">
+                        {% csrf_token %}
+                        <a href="javascript:void(0)" class="list-group-item list-group-item-action"
+                           aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ form.name.label_tag }}{{ form.name }}</h5>
+                            </div>
+                            <p class="mb-1">{{ form.description }}</p>
+                            {{ form.created_by }}
+                            {{ form.project }}
+                            <span class="badge bg-primary rounded-pill">{{ form.energy.label_tag }} {{ form.energy }}</span>
+                            <button name="add_task{{ board.pk }}" value="add_task{{ board.pk }}" class="btn btn-primary"
+                                    type="submit">Add Task
+                            </button>
+                            <button class="btn btn-danger" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#taskList-{{ board.pk }}" aria-expanded="false"
+                                    aria-controls="collapseTask">
+                                Cancel
+                            </button>
+                        </a>
+                    </form>
+                    {% if user_member.role == 'Moderator' or user_member.role == 'Owner' %}
+                        <a data-bs-toggle="collapse" href="#taskList-{{ board.pk }}" role="button" aria-expanded="false"
+                           aria-controls="taskList-{{ board.pk }}"
+                           style="height: 100px" class="new-task">
+                            <input width="220px" type="image" src="{% static 'img/add_icon.png' %}" alt="">
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+        {% if user_member.role == 'Moderator' or user_member.role == 'Owner' %}
+            <div id="newList" style="display: none" class="list-group-item task-card bg-secondary">
+                <a class="new-task" href="#">
+                    <form id="TaskListForm" method="post" action="{% url 'project details' project.pk %}">
+                        {% csrf_token %}
+                        {{ form2 }}
+                        <button class="btn btn-primary" type="submit">Create</button>
+                        <button id="cancel" class="btn btn-danger" type="button">Cancel</button>
+                    </form>
+                </a>
+            </div>
+            <div class="list-group-item task-card bg-secondary">
+                <a class="new-task" href="#">
+                    <input id="addList" width="220px" type="image" src="{% static 'img/add_icon.png' %}" alt="">
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+<script src="{% static 'js/bootstrap.js' %}"></script>

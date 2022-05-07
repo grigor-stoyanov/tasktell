@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" id="task-tab" data-bs-toggle="tab" data-bs-target="#tasks" type="button"
+               role="tab"
+               aria-controls="tasks" aria-selected="true">Tasks</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="member-tab" data-bs-toggle="tab" data-bs-target="#members" type="button"
+               role="tab"
+               aria-controls="members" aria-selected="true">Members</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview"
+               type="button"
+               role="tab"
+               aria-controls="overview" aria-selected="true">Overview</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        {% if 'details' in request.path %}
+            {% include 'project/project-overview.html' %}
+
+            {% if not user_member.role == 'Applicant' %}
+                {% include 'project/project-tasks.html' %}
+                {% include 'project/project-members.html' %}
+            {% endif %}
+        {% elif 'edit' in request.path %}
+            {% include 'project/project-edit-task.html' %}
+        {% elif 'task-list' in request.path %}
+            {% include 'project/project-delete-task-list.html' %}
+        {% else %}
+            {% include 'project/project-delete-task.html' %}
+        {% endif %}
+    </div>
+    <script src="{% static 'js/tasklist_show.js' %}"></script>
+{% endblock %}
+{% block footer %}
+{% endblock %}

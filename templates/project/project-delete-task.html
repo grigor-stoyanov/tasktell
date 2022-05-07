@@ -1,0 +1,16 @@
+{% extends 'project/project-tasks.html' %}
+{% block delete_content %}
+    {% load static %}
+    <link rel="stylesheet" href={% static "css/modal.css" %}>
+    <form method="post" action="{% url 'delete task' object.pk %}">
+        {% csrf_token %}
+        {{ form }}
+        <div class="overlay">
+            <div class="plop">
+                <p>Are you sure you want to delete this Task?</p>
+                <button type="submit" class="btn btn-danger">Confirm</button>
+                <a href="{% url 'project details' object.project_id %}" class="btn btn-success">Cancel</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

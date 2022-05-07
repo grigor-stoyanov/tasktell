@@ -1,0 +1,94 @@
+{% load static %}
+
+<div class="tab-pane" id="members" role="tabpanel" aria-labelledby="members-tab">
+    <h1 class="text-center">Project Members</h1>
+    <p class="text-center">You can view and add new project members here.</p>
+    <div class="flex-container justify-content-around">
+        <form method="get" action="{% url 'project details' project.pk %}">
+            {% csrf_token %}
+            {{ filter_by_name }}
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+
+
+        {% if user_member.role == 'Owner' or user_member.role == 'Moderator' %}
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                            Send Invite Link
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                         data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <form method="post" action="{% url 'invite member' project.pk %}">
+                                {% csrf_token %}
+                                {{ form3errors | safe }}
+                                {{ form3 }}
+                                <button class="btn btn-primary" type="submit">Invite</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+
+    <ul class="list-group list-group-flush">
+
+        {% for member in members %}
+            <li class="member list-group-item">
+                <div class="ms-2 me-auto">
+                    {% if not member.avatar %}
+                        <img width="64px" height="64px" src="{% static 'img/profile_icon.png' %}" alt="">
+                    {% else %}
+                        <img width="64px" height="64px" src="{{ member.avatar.url }}" alt="">
+                    {% endif %}
+                    <a href="{% url 'profile' member.user_id %}">{{ member.user }}</a>
+                    <div class="fw-bold d-inline">
+                        <div class="btn-group float-end" role="group" aria-label="Member Options">
+                            <form action="{% url 'change role' member.pk project.id %}" method="post">
+                                {% csrf_token %}
+                                {{ form4 }}
+                                <label> Role:
+                                    <select class="btn btn-warning px-2 me-2" name="Role"
+                                            {% if not user_member.role == 'Owner' %}
+                                            disabled
+                                            {% endif %} onchange="this.form.submit()">
+                                        <option {% if member.role == 'Owner' %}selected{% endif %}>Owner</option>
+                                        <option {% if member.role == 'Moderator' %}selected{% endif %}>Moderator
+                                        </option>
+                                        <option {% if member.role == 'Member' %}selected{% endif %}>Member</option>
+                                        <option hidden {% if member.role == 'Applicant' %}selected{% endif %}>
+                                            Applicant
+                                        </option>
+                                    </select>
+                                </label>
+                            </form>
+
+                            {% if user_member.role == 'Owner' and not member.user_id == request.user.pk %}
+                                <a href="{% url 'remove from team' project.pk member.pk %}"
+                                   class="btn btn-danger  px-2 me-2">Remove</a>
+                            {% endif %}
+                            {% if member.user_id == request.user.pk %}
+                                <a href="{% url 'leave team' project.pk %}" class="btn btn-danger  px-2 me-2">Leave</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="text-center">
+        {% if not user_member.role == 'Applicant' %}
+            {% if members.count > 1 %}
+                <a href="{% url 'chat' project.pk chat.pk %}" class="btn btn-success ">Project Chat</a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
