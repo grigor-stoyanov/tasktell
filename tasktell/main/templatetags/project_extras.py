@@ -1,5 +1,8 @@
 from django import template
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
+
+from tasktell.common.helpers import get_logged_in_user_as_member_or_none
 from tasktell.main.models import Project, Member, Tasks
 import datetime as dt
 
@@ -9,11 +12,9 @@ UserModel = get_user_model()
 
 @register.simple_tag
 def disable(project_pk, user_pk):
-    try:
-        Project.objects.filter(member__user_id=user_pk).get(pk=project_pk)
+    if get_logged_in_user_as_member_or_none(project_pk, user_pk):
         return 'disabled'
-    except Exception:
-        return
+    return
 
 
 @register.simple_tag

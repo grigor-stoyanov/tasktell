@@ -1,8 +1,10 @@
 from functools import wraps
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotAllowed
 from django.utils.log import log_response
 
+from tasktell.common.helpers import get_logged_in_user_as_member_or_none
 from tasktell.main.models import Member, Project
 
 
@@ -10,10 +12,7 @@ def require_http_methods_mod_and_owner(request_method_set):
     def decorator(func):
         @wraps(func)
         def inner(request, *args, **kwargs):
-            try:
-                user_member = Project.objects.get(pk=kwargs['pk']).member_set.get(user_id=request.user.pk)
-            except Exception:
-                user_member = None
+            user_member = get_logged_in_user_as_member_or_none(kwargs['pk'], request.user.pk)
             if user_member:
                 if user_member.role == Member.Roles.OWNER or user_member.role == Member.Roles.MOD:
                     request_method_set.add('POST')
@@ -36,10 +35,7 @@ def require_http_methods_owner(request_method_set):
     def decorator(func):
         @wraps(func)
         def inner(request, *args, **kwargs):
-            try:
-                user_member = Project.objects.get(pk=kwargs['pk']).member_set.get(user_id=request.user.pk)
-            except Exception:
-                user_member = None
+            user_member = get_logged_in_user_as_member_or_none(kwargs['pk'], request.user.pk)
             if user_member:
                 if user_member.role == Member.Roles.OWNER:
                     request_method_set.add('POST')

@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
@@ -8,6 +9,8 @@ from tasktell.chat.models import Chat
 from tasktell.common.decorators import require_http_methods_mod_and_owner
 from django.views.generic import CreateView, DetailView
 from django.views.generic.edit import FormMixin
+
+from tasktell.common.helpers import get_logged_in_user_as_member_or_none
 from tasktell.main.forms.member import MemberUsernameContains, InviteMemberForm, ChangeRoleForm
 from tasktell.main.forms.project import ProjectCreateForm, PublicProjectForm
 from tasktell.main.forms.task import CreateTaskForm
@@ -79,15 +82,9 @@ class ProjectDetailsView(FormMixin, LoginRequiredMixin, DetailView):
         context['form3errors'] = self.request.COOKIES.get('form_errors', '')
         context['form4'] = ChangeRoleForm()
         context['taskboards'] = TaskList.objects.filter(project_id=self.object.pk)
-
-        try:
-            user_member = self.object.member_set.select_related().get(projects=self.get_object().pk,
-                                                                      user_id=self.request.user.pk)
-            context['user_member'] = user_member
-            context['chat'] = Chat.objects.exclude(members_id=user_member.pk).first()
-        except Exception:
-            context['user_member'] = None
-
+        context['user_member'] = get_logged_in_user_as_member_or_none(self.get_object().pk, self.request.user.pk)
+        if context['user_member']:
+            context['chat'] = Chat.objects.exclude(members_id=context['user_member'].pk).first()
         return context
 
     def post(self, request, *args, **kwargs):

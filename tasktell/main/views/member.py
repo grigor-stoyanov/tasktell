@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -7,6 +8,7 @@ from django.views.generic.edit import UpdateView
 
 from tasktell.chat.models import Chat
 from tasktell.common.decorators import require_http_methods_mod_and_owner, require_http_methods_owner
+from tasktell.common.helpers import get_logged_in_user_as_member_or_none
 from tasktell.main.forms.member import InviteMemberForm, ChangeRoleForm
 from tasktell.main.models import Member, Project
 from tasktell.main.views.project import ProjectDetailsView
@@ -43,9 +45,8 @@ class MemberChangeStatusView(LoginRequiredMixin, RedirectView):
 class AcceptInviteView(MemberChangeStatusView):
     def dispatch(self, request, *args, **kwargs):
         project = Project.objects.get(pk=self.kwargs['pk'])
-        try:
-            project.member_set.select_related().get(user_id=self.request.user.pk)
-        except Exception:
+        user_member = get_logged_in_user_as_member_or_none(project.pk, self.request.user.pk)
+        if not user_member:
             new_member = Member(role=Member.Roles.MEMBER, user_id=request.user.pk)
             new_member.save()
             Chat.objects.create(members_id=new_member.pk, project_id=project.pk)
