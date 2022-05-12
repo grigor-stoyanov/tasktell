@@ -1,0 +1,27 @@
+{% load project_extras %}
+<div class="card-body">
+    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Projects</i>
+    </h6>
+
+    <div class="flex-container justify-content-start flex-wrap">
+        {% for project in projects %}
+            <div class="card project-cards mx-4">
+                <small>{{ project.name }}</small>
+                <label>Type:
+                    <p>{{ project.type }}</p>
+                </label>
+                <label>Description:
+                    <p>{{ project.description }}</p>
+                </label>
+                <div class="progress mb-3" style="height: 10px">
+                    <div class="progress-bar" role="progressbar" style="width: {% progress project.pk %}%;"
+                         aria-valuenow="{% progress project.pk %}"
+                         aria-valuemin="0" aria-valuemax="100">{% progress project.pk %}%
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+</div>
+</div>

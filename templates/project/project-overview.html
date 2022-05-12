@@ -1,0 +1,29 @@
+{% load project_extras %}
+{% load static %}
+<div class="tab-pane" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+    <h1 class="text-center"> Project Overview</h1>
+    <article class="flex-container justify-content-center">
+    <div class="mx-4">
+        {% if not project.logo %}
+            <img height="500px" width="500px" src="{% static 'img/icon.png' %}" alt="">
+        {% else %}
+            <img height="500px" width="500px" src="{{ project.logo.url }}" alt="">
+        {% endif %}
+    </div>
+        <div class="d-inline-block mx-4">
+            <h2>{{ project.name }}</h2>
+            <span><strong>Type: </strong>{{ project.type }} </span>
+            <p><strong>Description: </strong>{{ project.description }}
+            </p>
+            <span class="d-block"><strong>Members: </strong>{% members_count project %}</span>
+
+            <hr>
+            <span><strong>Progress: </strong></span>
+            <div class="progress w-50 mt-2 mb-2">
+                    <div class="progress-bar" role="progressbar" style="width: {% progress project.pk %}%;" aria-valuenow="{% progress project.pk %}"
+                         aria-valuemin="0" aria-valuemax="100">{% progress project.pk %}%
+                    </div>
+            </div>
+        </div>
+    </article>
+</div>

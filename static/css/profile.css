@@ -1,0 +1,44 @@
+.main-body {
+    padding: 15px;
+}
+
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+}
+
+.card {
+    padding: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+}
+
+.card-body {
+    margin: 0;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+    margin-top: 30px;
+}
+
+
+.shadow-none {
+    box-shadow: none !important;
+}
+.down{
+    padding: 30%;
+}
+.project-cards{
+    height: 300px;
+    width: 250px;
+    margin-top:32px;
+}
+.h3{
+    margin-top: 32px;
+}
