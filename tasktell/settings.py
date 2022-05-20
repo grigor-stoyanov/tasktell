@@ -34,9 +34,11 @@ TASKTELL_APPS = [
     'tasktell.chat'
 ]
 OTHER_APPS = [
-    'cloudinary'
+    'channels',
+    'cloudinary',
+
 ]
-INSTALLED_APPS = DJANGO_APPS + TASKTELL_APPS + OTHER_APPS
+INSTALLED_APPS = OTHER_APPS + DJANGO_APPS + TASKTELL_APPS
 
 MIDDLEWARE = [
 
@@ -180,3 +182,13 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+ASGI_APPLICATION = 'tasktell.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
