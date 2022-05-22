@@ -23,7 +23,7 @@
         {% if 'details' in request.path %}
             {% include 'project/project-overview.html' %}
 
-            {% if user_member and not user_member.role == 'Applicant' %}
+                {% if user_member and not user_member.role == 'Applicant' %}
                 {% include 'project/project-tasks.html' %}
                 {% include 'project/project-members.html' %}
             {% endif %}
