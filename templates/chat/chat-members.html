@@ -1,0 +1,18 @@
+{% load static %}
+{% for chat in chat_list %}
+    <a href="{% url 'chat' object.pk chat.pk %}" class="list-group-item list-group-item-action border-0">
+    <div id="new-message{{ chat.pk }}" class="badge bg-success float-right"></div>
+        <div class="d-flex align-items-start">
+            {% if chat.members.user.profile.avatar %}
+                <img class="rounded-circle mr-1" src="{{ chat.members.user.profile.avatar.url }}" width="40" height="40">
+            {% else %}
+                <img src="{% static 'img/profile_icon.png' %}" class="rounded-circle mr-1"
+                     alt="" width="40" height="40">
+            {% endif %}
+            <div class="flex-grow-1 ml-3">
+                {{ chat.members.user.username }}
+                <div class="small"><span class="fas fa-circle chat-online"></span> {{ chat.members.role }}</div>
+            </div>
+        </div>
+    </a>
+{% endfor %}

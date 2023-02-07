@@ -1,0 +1,128 @@
+body, html {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+footer {
+    background-color: #212529;
+    color: white;
+    width: 100%;
+    text-align: center;
+    z-index: 0;
+}
+
+nav {
+    z-index: 99;
+    position: fixed;
+    top: 0;
+}
+
+.splash {
+    background-color: #212529;
+    height: 80px;
+}
+
+
+.nav-link {
+    background-color: #212529;
+    color: pink;
+    text-decoration: none;
+    height: 80px;
+    text-align: center;
+    padding-top: 25px;
+}
+
+.nav-link:hover {
+    cursor: pointer;
+    color: pink;
+    background-color: #b3c100;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.jumbotron-content {
+    flex: 1;
+    padding: 10% 35px;
+}
+
+.banner {
+    padding: 64px 10%;
+}
+
+.task-card {
+    width: 500px;
+    padding: 64px 32px;
+    min-width: 250px;
+    min-height: 340px;
+    display: inline-block;
+}
+
+.badge {
+    float: right;
+}
+
+.scrolly-outer {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.scrolly-inner {
+    position: absolute;
+    top: 200px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+
+.task-card a:hover {
+    background-color: #b3c100;
+}
+
+.description {
+    white-space: normal;
+}
+
+.new-task {
+    display: flex;
+    border: 1px solid black;
+    justify-content: center;
+    height: 400px;
+    width: 434px;
+}
+
+.member {
+    background-color: #6c757d;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.drop {
+    height: 600px;
+    width: 500px;
+    box-shadow: 10px 5px 5px black;
+    margin: auto;
+    margin-top: 224px;
+    padding: 5%;
+}
+
+.ping {
+    height: 50%;
+    width: 50%;
+    box-shadow: 10px 5px 5px black;
+    margin: auto;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 5%;
+}
+
+.helptext {
+    display: none;
+}

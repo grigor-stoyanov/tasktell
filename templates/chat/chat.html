@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <div class="container p-0">
+        <h1 class="h3 m-3 text-center">Messages</h1>
+
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-12 col-lg-5 col-xl-3 border-right sidebar">
+
+                    {# List of Users #}
+                    {% include 'chat/chat-members.html' %}
+
+                    <hr class="d-block d-lg-none mt-1 mb-0">
+                </div>
+                {# Chat Header #}
+                <div class="col-12 col-lg-7 col-xl-9">
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
+                                {% if current_chat.members.user.profile.avatar %}
+                                    <img class="rounded-circle mr-1"
+                                         src="{{ current_chat.members.user.profile.avatar.url }}" width="40"
+                                         height="40">
+                                {% else %}
+                                    <img src="{% static 'img/profile_icon.png' %}" class="rounded-circle mr-1"
+                                         alt="" width="40" height="40">
+                                {% endif %}
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <strong>{{ current_chat.members.user }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    {# Messages #}
+                    {% include 'chat/chat-messages.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
