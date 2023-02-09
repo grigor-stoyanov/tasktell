@@ -79,3 +79,4 @@ App frontend and main functions mostly inspired by [Trello](https://trello.com/e
 | ![image](https://user-images.githubusercontent.com/76039296/217279449-93faa114-667a-4183-96cb-60d5393da610.png) |
 |-|
 [Linkedin](https://www.linkedin.com/feed/)
+[Certificate](https://softuni.bg/certificates/details/133149/4cc653c1)
